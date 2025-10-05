@@ -1,0 +1,47 @@
+name: Python CI with Dependency Caching
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Setup Python
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Cache pip dependencies
+      - name: Prime the cache
+        id: prime-cache-d80e054
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-d80e054
+          restore-keys: |
+            cache-d80e054
+
+      # 4. Echo cache hit/miss
+      - name: prime-cache-d80e054
+        run: echo "Cache hit? ${{ steps.prime-cache-d80e054.outputs.cache-hit }}"
+
+      # 5. Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 6. Run tests (example)
+      - name: Run tests
+        run: echo "No tests yet"
