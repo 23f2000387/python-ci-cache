@@ -12,19 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
-      - name: Checkout repository
+      # 1. Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       # 2. Setup Python
-      - name: Setup Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3. Cache pip
+      # 3. Cache pip dependencies
       - name: Cache pip
-        id: prime-cache-d80e054
+        id: cache-pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -34,7 +34,7 @@ jobs:
 
       # 4. Show cache hit/miss
       - name: Show cache result
-        run: echo "Cache hit? ${{ steps.prime-cache-d80e054.outputs.cache-hit }}"
+        run: echo "Cache hit? ${{ steps.cache-pip.outputs.cache-hit }}"
 
       # 5. Install dependencies
       - name: Install dependencies
@@ -42,6 +42,6 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 6. Run tests
+      # 6. Run tests (example)
       - name: Run tests
         run: echo "No tests yet"
